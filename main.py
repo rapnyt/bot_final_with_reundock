@@ -184,46 +184,49 @@ def delay(x, y):
 def initial_setup():
     delay(2, 3)
     mouse_scroll(player_list_field)
-    delay(0.6, 1.2)
+    delay(0.5, 0.9)
 
 
 def undocking_sequence():
     print("Undocking at ", datetime.datetime.now())
     mouse_sequence(undock_icon)
-    delay(35, 50)
+    delay(25, 35)
     mouse_scroll(player_list_field)
-    delay(0.6, 1.2)
+    delay(0.5, 0.9)
 
 
 def overview_sequence():
     mouse_sequence(overview_open_icon)
-    delay(0.6, 1.2)
+    delay(0.5, 0.9)
     mouse_sequence(overview_type_icon)
-    delay(0.6, 1.2)
+    delay(0.5, 0.9)
     mouse_sequence(overview_mining_type_icon)
-    delay(0.6, 1.2)
+    delay(0.5, 0.9)
     mouse_sequence(mining_belt_icon)
 
 
-def warping_and_initial_mining_sequence():
+def warping():
     print("Warping at ", datetime.datetime.now())
     mouse_sequence(warp_belt)
-    delay(0.6, 1.2)
+    delay(0.5, 0.9)
     mouse_sequence(zoom_out)
-    delay(50, 65)
+    delay(55, 60)
+
+
+def initial_mining_sequence():
     print("Mining at ", datetime.datetime.now())
     mouse_mining_sequence(first_strip_miner_module, second_strip_miner_module)
 
 
 def approach_and_flee_sequence():
     mouse_sequence(second_ore_rock)
-    delay(0.6, 1.2)
+    delay(0.5, 0.9)
     mouse_sequence(approach_ore_rock)
-    delay(0.6, 1.2)
+    delay(0.5, 0.9)
     mouse_sequence(overview_type_icon)
-    delay(0.6, 1.2)
+    delay(0.5, 0.9)
     mouse_sequence(overview_station_type_icon)
-    delay(0.6, 1.2)
+    delay(0.5, 0.9)
     mouse_sequence(ten_forward_station_icon)
     print("Commencing alarm bot at ", datetime.datetime.now())
 
@@ -252,7 +255,7 @@ def unload_sequence():
 
 def time_check_if_finished():
     now = datetime.datetime.now()
-    endgame = now.replace(day=30, hour=9, minute=50, second=0, microsecond=0)
+    endgame = now.replace(day=16, hour=18, minute=0, second=0, microsecond=0)
     if now > endgame:
         print("Mining bot completed at ", datetime.datetime.now())
         sys.exit()
@@ -260,30 +263,30 @@ def time_check_if_finished():
 
 def flee_sequence_1():
     mouse_sequence(overview_open_icon)
-    delay(0.6, 1.2)
+    delay(0.5, 0.9)
     mouse_sequence(ten_forward_station_icon)
-    delay(0.6, 1.2)
+    delay(0.5, 0.9)
     mouse_sequence(dock_icon_2)
 
 
 def flee_sequence_2():
     mouse_sequence(overview_type_icon)
-    delay(0.6, 1.2)
+    delay(0.5, 0.9)
     mouse_sequence(overview_station_type_icon)
     delay(1, 3)
     mouse_sequence(ten_forward_station_icon)
-    delay(0.6, 1.2)
+    delay(0.5, 0.9)
     mouse_sequence(dock_icon_2)
 
 
 def flee_sequence_3():
     delay(1, 3)
     mouse_sequence(overview_type_icon)
-    delay(0.6, 1.2)
+    delay(0.5, 0.9)
     mouse_sequence(overview_station_type_icon)
-    delay(0.6, 1.2)
+    delay(0.5, 0.9)
     mouse_sequence(ten_forward_station_icon)
-    delay(0.6, 1.2)
+    delay(0.5, 0.9)
     mouse_sequence(dock_icon)
 
 
@@ -317,7 +320,15 @@ while True:
                 break
             elif status == 2:
                 sys.exit()
-        warping_and_initial_mining_sequence()
+        warping()
+        status = alarm_bot(5, last_player_icon)
+        if status:
+            flee_sequence_3()
+            if status == 1:
+                break
+            elif status == 2:
+                sys.exit()
+        initial_mining_sequence()
         status = alarm_bot(5, last_player_icon)
         if status:
             flee_sequence_3()
